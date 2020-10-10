@@ -1,0 +1,26 @@
+x<-runif(3,0,10)
+a<-x[1]
+b<-x[2]
+c<-x[3]
+if(a>b){
+  if(b>c){
+    print(c(a=a,b=b,c=c))
+  }else{
+    if(a>c){
+      print(c(a=a,c=c,b=b))
+    }else{
+      print(c(c=c,a=a,b=b))
+    }
+  }
+}else{
+  if(b>c){
+    if(a>c){
+      print(c(b=b,a=a,c=c))
+    }else{
+      print(c(b=b,c=c,a=a))
+    }
+  }else{
+    print(c(c=c,b=b,a=a))
+  }
+}
+  
