@@ -1,6 +1,6 @@
 x<-sample(1:100,1)
 Least_moves<-function(x){
-   for(i in 1:7){
+   for(i in 0:7){
      if(x==2^i){
        m=i
        break
