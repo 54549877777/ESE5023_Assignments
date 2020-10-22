@@ -33,7 +33,7 @@ data %>%
   summarise(month_mean=mean(ws),na.rm=T) %>%
   mutate(year=as.numeric(substr(date,1,4))) %>%
   mutate(month=as.numeric(substr(date,5,6)))%>% 
-  ggplot(aes(x=month, y=month_mean,color=year)) + 
+  ggplot(aes(x=month, y=month_mean)) + 
   geom_line()+
   facet_wrap(~ year)
   

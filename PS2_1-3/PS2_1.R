@@ -16,11 +16,10 @@ Sig_Eqs %>%
 
 #1.3
 Sig_Eqs %>%
-  select(EQ_PRIMARY,YEAR) %>% 
   filter(EQ_PRIMARY>6.0)%>% 
+  select(EQ_PRIMARY,YEAR) %>% 
   group_by(YEAR) %>% 
   summarise(EQ_PRIMARY_YEAR=sum(EQ_PRIMARY,na.rm = T)) %>% 
-  
   ggplot(aes(x=YEAR,y=EQ_PRIMARY_YEAR)) + 
   geom_line()
 #分析：
@@ -28,14 +27,16 @@ Sig_Eqs %>%
 #成指数增长。我觉得原因有2个：首先是古时的数据不完整，很多数据没有被记录
 #或数据丢失；第二是近几百年来地壳变得更活跃了。
 
+
 #1.4
-#函数
-CountEq_LargestEq<-function(country){
+
+#创建函数
+CountEq_LargestEq<-function(each_country){
   num_eq<-Sig_Eqs %>% 
-    filter(COUNTRY==country)%>% 
+    filter(COUNTRY==each_country)%>% 
     nrow()
   max_eq<-Sig_Eqs %>%
-    filter(COUNTRY==country)%>%
+    filter(COUNTRY==each_country)%>%
     filter(EQ_PRIMARY == max(EQ_PRIMARY,na.rm = T))%>% 
     mutate(date=paste(YEAR,MONTH,DAY,sep = "-"))%>% 
     pull(date)
@@ -43,22 +44,22 @@ CountEq_LargestEq<-function(country){
   return(list)
 }
 
-#将数据输入数据框，再转换成tibble表
-country<-unique(Sig_Eqs$COUNTRY)
+#用for循环输入每个国家，并将数据输入数据库
+each_country<-unique(Sig_Eqs$COUNTRY)
 number_eq<-c()
 country_eq<-c()
 date_max_eq<-c()
-for(i in country){
+for(i in each_country){
   a<-as.numeric(CountEq_LargestEq(i)[1])
   b<-i
-  c<-CountEq_LargestEq(i)[2]
+  c<-as.character(CountEq_LargestEq(i)[2])
   number_eq <-c(number_eq,a)
   country_eq<-c(country_eq,b)
   date_max_eq<-c(date_max_eq,c)
 }
 df1<-data.frame(country_eq,number_eq,date_max_eq)
 
-#对新列表进行降序
+#转为tibble，并对新列表进行降序操作
 tbl_new<-as_tibble(df1)
 tbl_new %>% 
   arrange(desc(number_eq))
