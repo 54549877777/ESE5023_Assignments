@@ -59,7 +59,7 @@ forecast_2months$upper[2,2]
 
 #获取9月数据真值，10月数据没有
 tem_mean_sep<-wind_tb %>% 
-  mutate(tem = ifelse(substr(TMP,7,7) == "1" |substr(TMP,1,5) != '+9999',
+  mutate(tem = ifelse(substr(TMP,7,7) == "1" & substr(TMP,1,5) != '+9999',
                       as.numeric(substr(TMP,1,5))*0.1,NA)) %>%
   mutate(monthly = paste(substr(DATE,1,4),substr(DATE,6,7),sep = "")) %>% 
   filter(monthly == 202009 ) %>%
