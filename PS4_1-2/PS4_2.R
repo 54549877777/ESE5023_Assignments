@@ -2,12 +2,13 @@
 library(tidyr) 
 library(dplyr) 
 library(ggplot2)
+library(forecast)
 
 #1.构建时间序列
 winddata<- read.csv(file = "2281305.csv", header = T,encoding = "UTF-8")
 wind_tb <- as_tibble(winddata)
 tem_mean<-wind_tb %>% 
-  mutate(tem = ifelse(substr(TMP,7,7) == "1" |substr(TMP,1,5) != '+9999',
+  mutate(tem = ifelse(substr(TMP,7,7) == "1" & substr(TMP,1,5) != '+9999',
                       as.numeric(substr(TMP,1,5))*0.1,NA)) %>%
   mutate(monthly = paste(substr(DATE,1,4),substr(DATE,6,7),sep = "")) %>% 
   filter(monthly >= 201001 & monthly <= 202008) %>%
@@ -66,7 +67,7 @@ tem_mean_sep<-wind_tb %>%
   summarise(monthly_mean=mean(tem,na.rm = T)) %>% 
   pull()
 
-Relative_bias <- (tem_mean_sep-forecast_2months$mean[1])/tem_mean_real
+Relative_bias <- (tem_mean_sep-forecast_2months$mean[1])/tem_mean_sep
 Relative_bias_per <- Relative_bias*100
 print(paste("Relative bias:",Relative_bias_per,"%",sep = ""))
 #Relative bias = 1.4%
