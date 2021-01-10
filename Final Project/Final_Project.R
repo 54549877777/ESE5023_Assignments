@@ -231,6 +231,7 @@ plot(confirmed_ts, type="l")
 trModel <- lm(confirmed_ts ~ c(1:length(confirmed_ts)))
 plot(resid(trModel), type="l")
 plot(diff(resid(trModel)),type="l")
+plot(diff(diff(resid(trModel))),type="l")
 acf(resid(trModel))
 pacf(resid(trModel))
 #p=0，d并不平稳，q=1
